@@ -5,7 +5,7 @@ CoinsSet * Create(int M, int N, int L)
 {
 	CoinsSet *Set = new CoinsSet();
 	Set->M = M;
-	Set->N = N;
+	N = N;
 	Set->L = L;
 	int SumNM = N + M;
 	Set->A = new int[SumNM] {0};
@@ -82,12 +82,12 @@ int GetSetType(CoinsSet * Set)
 		{
 			if (Set->A[0] == 0 && Set->N > Set->v)
 			{
-				Set->SetType = 1;
+				Set->Type = 1;
 				return 1;
 			}
 			else if (Set->A[0] == 1 && Set->v > 0)
 			{
-				Set->SetType = 2;
+				Set->Type = 2;
 				return 2;
 			}
 		}
@@ -101,12 +101,12 @@ int GetSetType(CoinsSet * Set)
 		{
 			if (Set->A[0] == 0 && Set->N > (Set->v + Set->O))
 			{
-				Set->SetType = 3;
+				Set->Type = 3;
 				return 3;
 			}
 			else if (Set->A[0] == 1 && (Set->v + Set->O) > 0)
 			{
-				Set->SetType = 4;
+				Set->Type = 4;
 				return 4;
 			}
 		}
@@ -118,10 +118,108 @@ int GetSetType(CoinsSet * Set)
 
 	Set->O = 0;
 	Set->v = 0;
-	Set->SetType = 0;
+	Set->Type = 0;
 	cout << "Ошибка получения типа!!! Преобразование невозможно!!!";
 	return -1;
 }
 
+int FillCoins(CoinsSet * Set)
+{
+	if (Set->Type <= 0 && GetSetType(Set) <= 0)
+	{
+		return -1;//ошибка определения типа
+	}
 
+	int M = Set->M, N = Set->N, O = Set->O, v0 = Set->v, v1 = Set->v;
+	bool IsOInN = Set->Type >= 3;
+	Set->Coins[0] = 1;
+	N--;
+	if (Set->Type % 2 == 0)
+	{
+		v1--;
+	}
 
+	for (int i = 1;  i < M + N;  i++)
+	{
+		if (Set->A[i] == 1)
+		{
+			if (O > 0)
+			{
+				Set->Coins[i] = 1;
+				O--;
+				if (IsOInN)
+				{
+					N--;
+				}
+				else
+				{
+					M--;
+				}
+			}
+			else if (v0 > 0)
+			{
+				v0--;
+				M--;
+			}
+			else if (v1 > 0)
+			{
+				Set->Coins[i] = 1;
+				v1--;
+				N--;
+			}
+			else
+			{
+				cout << "Ошибка преобразования набора монет! A[i] == 1";
+				return Set->Type*-1;
+			}
+		}
+		else if (Set->A[i] == 0 && IsOInN)
+		{
+			if ((M - v0) > 0)
+			{
+				M--;
+			}
+			else if ((N - (Set-> O + v1)) > 0)
+			{
+				Set->Coins[i] = 1;
+				N--;
+			}
+			else
+			{
+				cout << "Ошибка преобразования набора монет! A[i] == 0";
+				return Set->Type*-1;
+			}
+		}
+		else if (Set->A[i] == 0 && !IsOInN)
+		{
+			if ((M - (O + v0)) > 0)
+			{
+				M--;
+			}
+			else if ((N - v1) > 0)
+			{
+				Set->Coins[i] = 1;
+				N--;
+			}
+			else
+			{
+				cout << "Ошибка преобразования набора монет! A[i] == 0";
+				return Set->Type*-1;
+			}
+		}
+		else
+		{
+			cout << "Ошибка некорректное значение в массиве A!!!";
+			return Set->Type*-1;
+		}
+	}
+
+	if (M == 0 && N == 0 && O == 0 && v0 == 0 && v1 == 0)
+	{
+		cout << "Массив порядка монет успешно заполнен!!!";
+		Set->Type += 4;
+		return Set->Type;
+	}
+	cout << "Ошибка преобразования набора монет! Некорректные итоговые значения!";
+	return Set->Type*-1;
+}
