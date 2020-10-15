@@ -25,7 +25,13 @@ CoinsSet * Create(int M, int N, int L)
 
 CoinsSet * Create(int M, int N, int L, int S, int K)
 {
-	return nullptr;
+	CoinsSet * Set = Create(M, N, L);
+	if (Set != 0 && FillA(Set, S, K) == 0 && FillCoins(Set) > 4)
+	{
+		return Set;
+	}
+	KillSet(Set);
+	return 0;
 }
 
 int KillSet(CoinsSet * Set)
@@ -222,4 +228,49 @@ int FillCoins(CoinsSet * Set)
 	}
 	cout << "Ошибка преобразования набора монет! Некорректные итоговые значения!";
 	return Set->Type*-1;
+}
+
+int PrintIntArray(int * Arr, int Len)
+{
+	for (int i = 0; i < Len; i++)
+	{
+		cout << Arr[i];
+	}
+	return 0;
+}
+
+int * CopyIntArray(int * Arr, int Len)
+{
+	int * NewArr = new int[Len];
+	for (int i = 0; i < Len; i++)
+	{
+		NewArr[i] = Arr[i];
+	}
+	return NewArr;
+}
+
+int VisualValidateCoins(CoinsSet * Set, int S, int K)
+{
+	int Len = Set->M + Set->N;
+	int * TmpCoins = CopyIntArray(Set->Coins, Len);
+	int L = Set->N;
+	cout << "Исходный набор монет:" << endl;
+	PrintIntArray(TmpCoins, Len);
+	cout << endl << "Набор монет по шагам" << endl;
+	for (int i = 0, pos = 0; i < K; i++, pos += S)
+	{
+		if (pos >= Len)		//переход в начало массива при достижении конца
+		{
+			pos -= Len;
+		}
+		L += 1 - TmpCoins[pos] * 2;	//подсчет суммы монет гербами вверх
+		TmpCoins[pos] = 1 - TmpCoins[pos];	//замена 1 на 0, 0 на 1
+		cout << i + 1 << ")\t";
+		PrintIntArray(TmpCoins, Len);
+		cout << endl;
+	}
+	cout << "Монет шербами вверх после последнего шага: " << L;
+
+	delete TmpCoins;
+	return 0;
 }
