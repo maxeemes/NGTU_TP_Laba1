@@ -5,9 +5,9 @@ CoinsSet * Create(int M, int N, int L)
 {
 	CoinsSet *Set = new CoinsSet();
 	Set->M = M;
-	N = N;
+	Set->N = N;
 	Set->L = L;
-	int SumNM = N + M;
+	int SumNM = M + N;
 	Set->A = new int[SumNM] {0};
 	Set->Coins = new int[SumNM] {0};
 
@@ -46,7 +46,6 @@ int FillA(CoinsSet * Set, int S, int K)
 {
 	if (MNLCheck(Set) && S >= 0 && K >= 0)
 	{
-		delete Set->A;
 		int SumNM = Set->N + Set->M;//количество монет
 
 		for (int i = 0, pos = 0; i < K; i++, pos += S)
@@ -70,7 +69,7 @@ int FillA(CoinsSet * Set, int S, int K)
 
 bool MNLCheck(CoinsSet * Set)
 {
-	if (Set->M >= 0 && Set->N >= 0 && Set->L >= 0 && Set->M + Set->N >= Set->L)
+	if (Set->M >= 0 && Set->N > 0 && Set->L >= 0 && ((Set->M + Set->N) >= Set->L))
 	{
 		return true;
 	}
@@ -136,25 +135,32 @@ int FillCoins(CoinsSet * Set)
 		return -1;//ошибка определения типа
 	}
 
-	int M = Set->M, N = Set->N, O = Set->O, v0 = Set->v, v1 = Set->v;
+	int M = Set->M, N = Set->N, SumNM = Set->M + Set->N, O = Set->O, v0 = Set->v, v1 = Set->v;
 	bool IsOInN = Set->Type >= 3;
 	Set->Coins[0] = 1;
 	N--;
 	if (Set->Type % 2 == 0)
 	{
-		v1--;
+		if (v1 == 0 && IsOInN)
+		{
+			O--;
+		}
+		else
+		{
+			v1--;
+		}
 	}
 
-	for (int i = 1;  i < M + N;  i++)
+	for (int i = 1;  i < SumNM;  i++)
 	{
 		if (Set->A[i] == 1)
 		{
 			if (O > 0)
 			{
-				Set->Coins[i] = 1;
 				O--;
 				if (IsOInN)
 				{
+					Set->Coins[i] = 1;
 					N--;
 				}
 				else
@@ -185,7 +191,7 @@ int FillCoins(CoinsSet * Set)
 			{
 				M--;
 			}
-			else if ((N - (Set-> O + v1)) > 0)
+			else if ((N - (O + v1)) > 0)
 			{
 				Set->Coins[i] = 1;
 				N--;
@@ -269,8 +275,8 @@ int VisualValidateCoins(CoinsSet * Set, int S, int K)
 		PrintIntArray(TmpCoins, Len);
 		cout << endl;
 	}
-	cout << "Монет шербами вверх после последнего шага: " << L;
+	cout << "Монет гербами вверх после последнего шага: " << L;
 
 	delete TmpCoins;
-	return 0;
+	return L;
 }
