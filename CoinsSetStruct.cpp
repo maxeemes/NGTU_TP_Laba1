@@ -1,7 +1,7 @@
 #include "CoinsSetStruct.h"
 
 using namespace std;
-CoinsSet * Create(int M, int N, int L)
+CoinsSet * Create(int M, int N, int L)//функция создания структуры набора монет с основными значениями
 {
 	CoinsSet *Set = new CoinsSet();
 	Set->M = M;
@@ -23,7 +23,7 @@ CoinsSet * Create(int M, int N, int L)
 	return 0;
 }
 
-CoinsSet * Create(int M, int N, int L, int S, int K)
+CoinsSet * Create(int M, int N, int L, int S, int K)//функция создания полной структуры набора монет
 {
 	CoinsSet * Set = Create(M, N, L);
 	if (Set != 0)
@@ -40,7 +40,7 @@ CoinsSet * Create(int M, int N, int L, int S, int K)
 	return 0;
 }
 
-int KillSet(CoinsSet * Set)
+int KillSet(CoinsSet * Set)//функция удаления структуры
 {
 	delete Set->A;
 	delete Set->Coins;
@@ -48,7 +48,7 @@ int KillSet(CoinsSet * Set)
 	return 0;
 }
 
-int FillA(CoinsSet * Set, int S, int K)
+int FillA(CoinsSet * Set, int S, int K)//функция за полнения массива позций монет, которые перевернутся
 {
 	if (MNLCheck(Set) && S >= 0 && K >= 0)
 	{
@@ -73,7 +73,7 @@ int FillA(CoinsSet * Set, int S, int K)
 	return -1;
 }
 
-bool MNLCheck(CoinsSet * Set)
+bool MNLCheck(CoinsSet * Set)//функция проверки корректности значений переменных M, N, L в структуре монет
 {
 	if (Set->M >= 0 && Set->N > 0 && Set->L >= 0 && ((Set->M + Set->N) >= Set->L))
 	{
@@ -82,7 +82,7 @@ bool MNLCheck(CoinsSet * Set)
 	return false;
 }
 
-int GetSetType(CoinsSet * Set)
+int GetSetType(CoinsSet * Set)//функция получения типа набора монет для дальнейшего расчета
 {
 	if (Set->L >= Set->N)
 	{
@@ -134,7 +134,7 @@ int GetSetType(CoinsSet * Set)
 	return -1;
 }
 
-int FillCoins(CoinsSet * Set)
+int FillCoins(CoinsSet * Set)//функция расчета набора монет
 {
 	if (Set->Type <= 0 && GetSetType(Set) <= 0)
 	{
@@ -242,7 +242,7 @@ int FillCoins(CoinsSet * Set)
 	return Set->Type*-1;
 }
 
-int PrintIntArray(int * Arr, int Len)
+int PrintIntArray(int * Arr, int Len)//функция вывода значений целочисленного массива в консоль
 {
 	for (int i = 0; i < Len; i++)
 	{
@@ -251,7 +251,7 @@ int PrintIntArray(int * Arr, int Len)
 	return 0;
 }
 
-int * CopyIntArray(int * Arr, int Len)
+int * CopyIntArray(int * Arr, int Len)//функция копирования целочисленного массива
 {
 	int * NewArr = new int[Len];
 	for (int i = 0; i < Len; i++)
@@ -261,7 +261,7 @@ int * CopyIntArray(int * Arr, int Len)
 	return NewArr;
 }
 
-int VisualValidateCoins(CoinsSet * Set, int S, int K)
+int VisualValidateCoins(CoinsSet * Set, int S, int K)//функция визуальной проверки набора монет
 {
 	int Len = Set->M + Set->N;
 	int * TmpCoins = CopyIntArray(Set->Coins, Len);

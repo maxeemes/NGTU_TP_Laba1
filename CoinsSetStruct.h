@@ -1,7 +1,5 @@
 #pragma once
 #include <SDKDDKVer.h>
-//#include <stdio.h>
-//#include <tchar.h>
 #include<string>
 #include <stdlib.h>
 #include <iostream>
@@ -26,15 +24,15 @@ struct CoinsSet
 					//4 - L < N	 && A[0] == 1;/8 - L < N	&& A[0] == 1 и массив Coins заполнен;
 };
 
-CoinsSet *Create(int M, int N, int L);
-CoinsSet *Create(int M, int N, int L, int S, int K);
-int KillSet(CoinsSet *Set);
-int FillA(CoinsSet *Set, int S, int K);
-bool MNLCheck(CoinsSet *Set);
-int GetSetType(CoinsSet *Set);
-int FillCoins(CoinsSet *Set);
-int PrintIntArray(int *Arr, int Len);
-int *CopyIntArray(int *Arr, int Len);
-int VisualValidateCoins(CoinsSet *Set, int S, int K);
+CoinsSet *Create(int M, int N, int L);//функция создания структуры набора монет с основными значениями
+CoinsSet *Create(int M, int N, int L, int S, int K);//функция создания полной структуры набора монет
+int KillSet(CoinsSet *Set);//функция удаления структуры
+int FillA(CoinsSet *Set, int S, int K);//функция за полнения массива позций монет, которые перевернутся
+bool MNLCheck(CoinsSet *Set);//функция проверки корректности значений переменных M, N, L в структуре монет
+int GetSetType(CoinsSet *Set);//функция получения типа набора монет для дальнейшего расчета
+int FillCoins(CoinsSet *Set);//функция расчета набора монет
+int PrintIntArray(int *Arr, int Len);//функция вывода значений целочисленного массива в консоль
+int *CopyIntArray(int *Arr, int Len);//функция копирования целочисленного массива
+int VisualValidateCoins(CoinsSet *Set, int S, int K);//функция визуальной проверки набора монет
 #endif // _CoinsSetStruct_h_
   
