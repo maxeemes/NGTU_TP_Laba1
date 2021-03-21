@@ -26,11 +26,17 @@ CoinsSet * Create(int M, int N, int L)
 CoinsSet * Create(int M, int N, int L, int S, int K)
 {
 	CoinsSet * Set = Create(M, N, L);
-	if (Set != 0 && FillA(Set, S, K) == 0 && FillCoins(Set) > 4)
+	if (Set != 0)
 	{
-		return Set;
+		if (FillA(Set, S, K) == 0 && FillCoins(Set) > 4)
+		{
+			return Set;
+		}
+		else
+		{
+			KillSet(Set);
+		}
 	}
-	KillSet(Set);
 	return 0;
 }
 
